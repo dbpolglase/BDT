@@ -1,0 +1,77 @@
+/* $STR: strHeaderCompa */
+[iniCONT>
+[TABLA>
+/*--------------------------------------------------------------------
+ | Codigo asignado a la tabla <TBL:NOMBRE> y a sus claves
+ +--------------------------------------------------------------------*/
+#define TBL_<TBL:NOMBRE>	<contador>      
+[incCONT>
+[CLAVE>
+#define KEY_<CLA:NOMBRE>_<TBL:NOMBRE>	<contador>      
+[incCONT>
+<CLAVE]
+<TABLA]
+
+[TABLA>
+/*--------------------------------------------------------------------
+ | TABLA: <TBL:NOMBRE>
+[CLAVE PRINCIPAL>
+ |  First Key: <CLA:NOMBRE>
+ |  Fields =[CAMPO CLAVE> <CAM:Nombre><CAMPO CLAVE]
+
+<CLAVE]
+[CLAVE UNICA>
+ |  Uniq Key: <CLA:NOMBRE>
+ |  Fields =[CAMPO CLAVE> <CAM:Nombre><CAMPO CLAVE]
+
+<CLAVE]
+[CLAVE NO UNICA>
+ |  Not Uniq key: <CLA:NOMBRE>
+ |  Fields =[CAMPO CLAVE> <CAM:Nombre><CAMPO CLAVE]
+
+<CLAVE]
+ +--------------------------------------------------------------------*/
+#define MAX_<TBL:NOMBRE>	<TBL:dimMax>
+
+typedef struct {
+[CAMPO>
+	<CAM:tipoC>;
+<CAMPO]
+	} Type<TBL:NOMBRE>;
+
+<TABLA]
+
+int  [+]_Directory(char *directory);
+int  [+]_Resize(int table, int dimension);
+void [+]_Overflow(int table, int over);
+int  [+]_NumRecords(int table);
+void [+]_LetFileOpen(int abierto);
+
+int  [+]_CreateBase();
+int  [+]_DeleteBase();
+int  [+]_CreatePrivate();
+int  [+]_DeletePrivate();
+int  [+]_Open();
+int  [+]_Close();
+
+[TABLA>
+int  [+]_Ins<TBL:Nombre>(Type<TBL:NOMBRE> *<TBL:nombre>);
+int  [+]_Del<TBL:Nombre>(Type<TBL:NOMBRE> *<TBL:nombre>);
+int  [+]_Mod<TBL:Nombre>(Type<TBL:NOMBRE> *<TBL:nombre>);
+ 
+[CLAVE PRINCIPAL>
+int  [+]_<TBL:Nombre>By<CLA:Nombre>(Type<TBL:NOMBRE> *<TBL:nombre>[CAMPO CLAVE>,
+				<CAM:tipoC><CAMPO CLAVE]);
+<CLAVE]
+[CLAVE UNICA>
+int  [+]_<TBL:Nombre>By<CLA:Nombre>(Type<TBL:NOMBRE> *<TBL:nombre>[CAMPO CLAVE>,
+				<CAM:tipoC><CAMPO CLAVE]);
+
+<CLAVE]
+int  [+]_Vol<TBL:Nombre>(int claveOrd, Type<TBL:NOMBRE> **pLista);
+[SELECCION>
+int  [+]_Sel<TBL:Nombre>By<SEL:Nombre>(int claveOrd,
+			Type<TBL:NOMBRE> **pLista[PARAMETRO SELECCION>,
+			<PRS:tipoC><PARAMETRO SELECCION]);
+<SELECCION]
+<TABLA]

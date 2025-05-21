@@ -1,0 +1,94 @@
+/* $STR: strHeaderConfi */
+/*--------------------------------------------------------------------
+ | Codigos para las operaciones sobre las tablas.
+ +--------------------------------------------------------------------*/
+#define BDT_INSERTAR		'C'
+#define BDT_ELIMINAR		'E'
+#define BDT_MODIFICAR		'M'
+ 
+[iniCONT>
+[TABLA>
+/*--------------------------------------------------------------------
+ | Tabla <TBL:NOMBRE>:
+[CLAVE PRINCIPAL>
+ |   Clave Principal: <CLA:NOMBRE> =[CAMPO CLAVE> <CAM:Nombre><CAMPO CLAVE]
+
+<CLAVE]
+[CLAVE UNICA>
+ |   Clave Secundaria unica: <CLA:NOMBRE> =[CAMPO CLAVE> <CAM:Nombre><CAMPO CLAVE]
+
+<CLAVE]
+[CLAVE NO UNICA>
+ |   Clave Secundaria no unica: <CLA:NOMBRE> =[CAMPO CLAVE> <CAM:Nombre><CAMPO CLAVE]
+
+<CLAVE]
+ |	MAX_<TBL:NOMBRE>: dimension maxima de la tabla.
+ |	TBL_<TBL:NOMBRE>: codigo asignado a la tabla.
+ |	LON_<TBL:NOMBRE>: tamano del elemento codificado.
+[CLAVE>
+ |	CLV_<CLA:NOMBRE>_<TBL:NOMBRE>: codigo asignado a la clave <CLA:NOMBRE>.
+<CLAVE]
+ |	Tipo<TBL:NOMBRE>: tipo del elemento de la tabla.
+ +--------------------------------------------------------------------*/
+#define MAX_<TBL:NOMBRE>		<TBL:dimMax>
+#define TBL_<TBL:NOMBRE>		<contador>      
+#define LON_<TBL:NOMBRE>		<TBL:lonEle>      
+[incCONT>
+[CLAVE>
+#define CLV_<CLA:NOMBRE>_<TBL:NOMBRE>	<contador>      
+[incCONT>
+<CLAVE]
+
+typedef struct {
+[CAMPO>
+	<CAM:tipoC>;
+<CAMPO]
+	} Tipo<TBL:NOMBRE>;
+
+<TABLA]
+/*================= INI PRIVADO ===================*/
+void [+]_Directorio(char *directorio);
+void [+]_Dimensionar(int tabla, int dimension);
+int  [+]_NumRegistros(int tabla);
+void [+]_CheckSum(int tabla, int *pSuma, int *pResta);
+
+void [+]_CreBase();
+void [+]_EliBase();
+
+int  [+]_AnaOperacion(char operacion, int tabla, void *pElemento);
+int  [+]_EjecutarRegAct(char *pRegAct);
+void [+]_IniciarRegAct();
+void [+]_IncrementarRegAct(char operacion, int tabla, void *pElemento);
+void [+]_ObtenerRegAct(char **pRegAct, int *pLonReg);
+
+[TABLA>
+int  [+]_Cod<TBL:Nombre>(char *, Tipo<TBL:NOMBRE> *);
+int  [+]_Dec<TBL:Nombre>(char *, Tipo<TBL:NOMBRE> *);
+<TABLA]
+/*================= FIN PRIVADO ===================*/
+
+void [+]_CrePrivada();
+void [+]_EliPrivada();
+void [+]_IniAcceso();
+void [+]_FinAcceso();
+
+[TABLA>
+int  [+]_AnaOpe<TBL:Nombre>(char operacion, Tipo<TBL:NOMBRE> *p<TBL:Nombre>,
+			   int *pIndClvPrinc);
+ 
+[CLAVE PRINCIPAL>
+int  [+]_<TBL:Nombre>Por<CLA:Nombre>(Tipo<TBL:NOMBRE> *<TBL:nombre>[CAMPO CLAVE>,
+				<CAM:tipoC><CAMPO CLAVE]);
+<CLAVE]
+[CLAVE UNICA>
+int  [+]_<TBL:Nombre>Por<CLA:Nombre>(Tipo<TBL:NOMBRE> *<TBL:nombre>[CAMPO CLAVE>,
+				<CAM:tipoC><CAMPO CLAVE]);
+
+<CLAVE]
+int  [+]_Vol<TBL:Nombre>(int claveOrd, Tipo<TBL:NOMBRE> **pLista);
+[SELECCION>
+int  [+]_Sel<TBL:Nombre>Por<SEL:Nombre>(int claveOrd,
+			Tipo<TBL:NOMBRE> **pLista[PARAMETRO SELECCION>,
+			<PRS:tipoC><PARAMETRO SELECCION]);
+<SELECCION]
+<TABLA]

@@ -1,0 +1,1156 @@
+/* $STR: strFuenteLocal*/
+#include <errno.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/sem.h>
+#include <fcntl.h>
+#include <string.h>
+#include <memory.h>
+#include <tpc.h>
+#include <err.h>
+#include <[-].h>
+ 
+/*--------------------------------------------------------------------
+ | PF_COMPAR: punt. a funcion comparac. para "qsort" y "BuscaElemento"
+ +--------------------------------------------------------------------*/
+typedef int (*PF_COMPAR)(const void *, const void *);
+
+/*--------------------------------------------------------------------
+ | BYTE:     sustituye a "unsigned char" en el modulo.
+ | FUNC_BDT: nombre de la funcion para los errores.
+ +--------------------------------------------------------------------*/
+#define BYTE		unsigned char
+#define FUNC_BDT	"<BAS:nombre>"
+ 
+/*--------------------------------------------------------------------
+ | CMP_VAL: compara valores simples, resultado: 1 mayor, 0 igual -1 menor
+ | POS_MEM: posicion en la memoria correspondiente a una direccion.
+ | DIR_MEM: direccion de la memoria correspondiente a una posicion.
+ +--------------------------------------------------------------------*/
+#define CMP_VAL(v1, v2)		((v1 == v2)? 0 : (((v1 < v2)? -1 : 1)))
+#define POS_MEM(punt)		((char *)(punt) - pMemoria)
+#define DIR_MEM(desp)		(pMemoria + (desp))
+
+/*--------------------------------------------------------------------
+ | macros para el manejo del estado de los elementos (codificados) de
+ | una tabla:
+ |      PONER_LIBRE:   pone un elemento como LIBRE.
+ |      PONER_OCUPADO: pone un elemento como OCUPADO.
+ |      ESTA_LIBRE:    dice si un elemento como LIBRE.
+ |      ESTA_OCUPADO:  dice si un elemento como OCUPADO .
+ +--------------------------------------------------------------------*/
+#define PONER_LIBRE(pE)		pE[0]='L'
+#define PONER_OCUPADO(pE)	pE[0]='O'
+#define ESTA_LIBRE(pE)		(pE[0]=='L')
+#define ESTA_OCUPADO(pE)	(pE[0]=='O')
+
+[TABLA>
+/*--------------------------------------------------------------------
+ | TAM_<TBL:NOMBRE>: tamano de la struct Type<TBL:NOMBRE>
+ | IND_<TBL:NOMBRE>: indice de un elemento segun una posicion en memoria.
+ |
+ | LON_<TBL:NOMBRE>: longitud del elemento <TBL:NOMBRE> en el fichero
+ | POS_<TBL:NOMBRE>: posicion de <TBL:NOMBRE> en el fichero
+ | BUF_<TBL:NOMBRE>: tamano de <TBL:NOMBRE> en el fichero.
+ | ELE_<TBL:NOMBRE>: posicion de un elemento en el fichero segun el indice
+ +--------------------------------------------------------------------*/
+#define TAM_<TBL:NOMBRE>	(sizeof(Type<TBL:NOMBRE>))
+#define IND_<TBL:NOMBRE>(pos)	((pos - pos<TBL:Nombre>) / TAM_<TBL:NOMBRE>)
+
+#define LON_<TBL:NOMBRE>	<TBL:lonEle>
+#define POS_<TBL:NOMBRE>	<TBL:posEle>
+#define BUF_<TBL:NOMBRE>	(MAX_<TBL:NOMBRE> * LON_<TBL:NOMBRE>)
+#define ELE_<TBL:NOMBRE>(i)	(long)(POS_<TBL:NOMBRE>+(LON_<TBL:NOMBRE>*i))
+<TABLA]
+
+/*====================================================================
+ *		FUNCIONES DE INICIALIZACION DE LA BASE
+ *====================================================================*/
+static void IniPunteros();
+static int  IniInformacion();
+
+[TABLA>
+/*====================================================================
+ *	FUNCIONES DE TRATAMIENTO DE LA TABLA <TBL:NOMBRE>
+ *====================================================================*/
+static void Cod<TBL:Nombre>(char *, Type<TBL:NOMBRE> *);
+static void Dec<TBL:Nombre>(char *, Type<TBL:NOMBRE> *);
+static void Ord<TBL:Nombre>();
+static int *Clave<TBL:Nombre>(const int);
+[CLAVE>
+static int  Cmp<CLA:Nombre><TBL:Nombre>(const Type<TBL:NOMBRE> *,
+				const Type<TBL:NOMBRE> *);
+static int  CmpDes<CLA:Nombre><TBL:Nombre>(const int *, const int *); 
+<CLAVE]
+<TABLA]
+
+/*====================================================================
+ *		     FUNCIONES GENERALES A LA BASE
+ *====================================================================*/
+
+static int BuscaElemento(void *, int *, int, PF_COMPAR);
+static int ActElemento(char *eleFic, int lonFic, int posFic,
+		       void *eleMem, int lonMem, int posMem);
+static void PosicionLibre(int, int *, int);
+
+/*====================================================================
+ *		 	VARIABLES LOCALES
+ *====================================================================*/
+/*--------------------------------------------------------------------
+ | fichImagen:	fichero imagen de la base de datos
+ | fdFBD:	descriptor del fichero base de datos
+ | fichAbierto:	indicativo de si el fichero permanece abierto o no.
+ | pMemoria:	memoria (compartida o dinamica) para la base.
+ | tamMemoria:	tamano de la memoria en bytes para la base.
+ +--------------------------------------------------------------------*/
+static char *fichImagen  = "[+].ibd";
+static int   fdFBD	 = -1;
+static int   fichAbierto = 1;
+static char *pMemoria	 = NULL;
+static int   lonMemoria	 = 0;
+
+[TABLA>
+/*--------------------------------------------------------------------
+ | Variables asociadas a la tabla <TBL:NOMBRE>:
+ |	pos<TBL:Nombre>: posicion de los elementos.
+ |	num<TBL:Nombre>: punt. al numero de elementos.
+ |	max<TBL:Nombre>: numero maximo de elementos (redimensionado).
+ |	ovf<TBL:Nombre>: indicativo de si la tabla admite overflow.
+[CLAVE>
+ |	clv<CLA:Nombre><TBL:Nombre>: indice de acceso por la clave <CLA:NOMBRE>
+<CLAVE]
+ +--------------------------------------------------------------------*/
+static int  pos<TBL:Nombre> = 0;
+static int *num<TBL:Nombre> = NULL;
+static int  max<TBL:Nombre> = MAX_<TBL:NOMBRE>;
+static int  ovf<TBL:Nombre> = 0;
+[CLAVE>
+static int *clv<CLA:Nombre><TBL:Nombre> = NULL;
+<CLAVE]
+
+<TABLA]
+
+/*====================== PROCEDIMIENTO PUBLICO ======================
+ * [+]_Directorio
+ *	Notifica el directorio de donde  se debe cogen el fichero
+ *	imagen de la base.
+ *
+ *    Parametros:
+ *	- directorio: path del directorio.
+ *====================================================================*/
+void [+]_Directorio(char *directorio)
+{
+	char *nuevoPath;
+
+/*--------------------------------------------------------------------
+ | Se pide mem. dinamica para el path del fichero imagen.
+ +--------------------------------------------------------------------*/
+nuevoPath = (char *) malloc(strlen(directorio) + sizeof("[+].ibd") + 1);
+if (nuevoPath == NULL)
+    ERR_SistOper(ERR_FATAL, FUNC_BDT, "[+]_Directorio", "malloc",
+		 "(%d bytes) path de la base", lonMemoria);
+
+/*--------------------------------------------------------------------
+ | Se compone el nuevo path.
+ +--------------------------------------------------------------------*/
+sprintf(nuevoPath, "%s/[+].ibd", directorio);
+fichImagen = nuevoPath;
+}
+
+/*====================== PROCEDIMIENTO PUBLICO ======================
+ * [+]_Dimensionar
+ *	Notifica la nueva dimension de una determinada tabla. Siempre
+ *	debe ser menor o igual a la definida como maxima.
+ *	Si el codigo de tabla no es correcto o el valor de la nueva
+ *	dimension supera el maximo definido, no se actualiza la
+ *	dimension.
+ *
+ *    Parametros:
+ *	- tabla: identificador de la tabla a dimensionar.
+ *	- dimension: valor de la nueva dimension.
+ *====================================================================*/
+void [+]_Resize(int tabla, int dimension)
+{
+switch(tabla) {
+[TABLA>
+    case TBL_<TBL:NOMBRE>:
+	/*------------------------------------------------------------
+	 | Si la dimension es mayor que la definida como maxima para la
+	 | tabla <TBL:NOMBRE> no se acepta y se da un error.
+	 +------------------------------------------------------------*/
+	if (dimension > MAX_<TBL:NOMBRE>)
+	    ERR_Aplicacion(ERR_NO_FATAL, FUNC_BDT, "[+]_Resize",
+	      "Resize %d of <TBL:NOMBRE> overflow (max: <TBL:dimMax>)",
+	       dimension);
+	else
+	    max<TBL:Nombre> = dimension;
+	break;
+<TABLA]
+    }
+}
+
+/*====================== PROCEDIMIENTO PUBLICO ======================
+ * [+]_Overflow
+ *	Notifica si se quiere el desbordamiento activado o no.
+ *	Si el codigo de tabla no es correcto no se hace nada.
+ *
+ *    Parametros:
+ *	- tabla: identificador de la tabla.
+ *	- desbord: valor 0/1 (NO/SI) de admision de desbordamiento.
+ *====================================================================*/
+void [+]_Overflow(int tabla, int desbord)
+{
+switch(tabla) {
+[TABLA>
+    case TBL_<TBL:NOMBRE>:
+	ovf<TBL:Nombre> = desbord;
+        break;
+<TABLA]
+    }
+}
+
+/*========================= FUNCION PUBLICA =========================
+ * [+]_Open
+ *	Inicializa la base de datos local creandola e iniciando el acceso.
+ *	La base puede dejar abierto el fichero imagen con lo que las
+ *	actualizaciones seran mas rapidas pero consume un descriptor.
+ *
+ *    Parametros:
+ *	- dejarAbierto: indicacion de si el fichero se deja abierto o no.
+ *    Devuelve:
+ *	0: si se crea correctamente.
+ *	-1: si hay error.
+ *====================================================================*/
+int [+]_Open(int dejarAbierto)
+{
+TPC_HazPortable(<BAS:portable>);
+/*--------------------------------------------------------------------
+ | Se calcula la memoria (segun el dimensionado) necesaria para la base.
+ +--------------------------------------------------------------------*/
+lonMemoria  = sizeof(int) * <BAS:numTbl> ;
+[TABLA>
+[CLAVE>
+lonMemoria += max<TBL:Nombre> * sizeof(int *) * <TBL:numCla>;
+<CLAVE]
+lonMemoria += max<TBL:Nombre> * TAM_<TBL:NOMBRE>;
+<TABLA]
+
+/*--------------------------------------------------------------------
+ | Se pide mem. dinamica para la base da datos.
+ +--------------------------------------------------------------------*/
+pMemoria = (char *) malloc(lonMemoria);
+if (pMemoria == NULL) {
+    ERR_SistOper(ERR_NO_FATAL, FUNC_BDT, "[+]_Inicializar", "malloc",
+    		 "(%d bytes) memory for base", lonMemoria);
+    return -1;
+    }
+
+/*--------------------------------------------------------------------
+ | Se guarda el modo de uso del fichero (abierto siempre o abrir y cerar).
+ | Se inicializan los punteros de acceso a la memoria.
+ | Se inicializan los arrays de indices de acceso por clave.
+ +--------------------------------------------------------------------*/
+fichAbierto = dejarAbierto;
+IniPunteros();
+return IniInformacion();
+}
+
+/*====================== PROCEDIMIENTO PUBLICO ======================
+ * [+]_Close
+ *	Finaliza el acceso a la base de datos
+ *====================================================================*/
+int [+]_Close()
+{
+/*--------------------------------------------------------------------
+ | Se libera la memoria dinamica.
+ +--------------------------------------------------------------------*/
+free(pMemoria);
+
+/*--------------------------------------------------------------------
+ | Si esta abierto, se cierra el fichero imagen de la base de datos.
+ +--------------------------------------------------------------------*/
+if (fichAbierto)
+    if (close(fdFBD) == -1) {
+	ERR_SistOper(ERR_NO_FATAL, FUNC_BDT, "[+]_Close", "close",
+			"file \"%s\"", fichImagen);
+	return -1;
+	}
+return 0;
+}
+
+/*========================= FUNCION PUBLICA =========================
+ * [+]_NumRecords
+ *	Informa del numero de registros que tiene la tabla.
+ *
+ *    Parametros:
+ *	- tabla: identificador de la tabla a dimensionar.
+ *    Devuelve:
+ *	 n: el numero de registros.
+ *	-1: si la tabla no es correcta
+ *====================================================================*/
+int [+]_NumRecords(int tabla)
+{
+switch(tabla) {
+[TABLA>
+    case TBL_<TBL:NOMBRE>:
+	return *num<TBL:Nombre>;
+<TABLA]
+    }
+return -1;
+}
+
+[TABLA>
+
+/*========================= FUNCION PUBLICA =========================
+ * [+]_Ins<TBL:Nombre>
+ *	Inserta un nuevo elemento <TBL:NOMBRE>, segun la clave
+ *	principal, para lo cual la struct debe tener todos los
+ *	campos de las claves con los valores actualizados.
+ *
+ *    Parametros:
+ *	p<TBL:nombre>: punt. a la struct del elemento a insertar.
+ *    Devuelve:
+ *	 0: si la insercion se realiza correctamente.
+ *	-1: si se produce un error.
+ *====================================================================*/
+int [+]_Ins<TBL:Nombre>(Type<TBL:NOMBRE> *p<TBL:Nombre>)
+{
+	char elemCod[LON_<TBL:NOMBRE>];
+	int  posicMem;
+	int  posicFic;
+	int  indElem;
+	int  numElem;
+	int  indClave;
+
+/*--------------------------------------------------------------------
+ | Se obtiene el numero actual de elementos.
+ +--------------------------------------------------------------------*/
+numElem = *num<TBL:Nombre>;
+
+[CLAVE PRINCIPAL>
+/*--------------------------------------------------------------------
+ | No debe existir otro elemento con igual valor en la clave principal
+ +--------------------------------------------------------------------*/
+if (BuscaElemento(p<TBL:Nombre>, clv<CLA:Nombre><TBL:Nombre>,
+		  numElem, (PF_COMPAR)Cmp<CLA:Nombre><TBL:Nombre>) >= 0) {
+    ERR_Aplicacion(ERR_NO_FATAL, FUNC_BDT, "[+]_Ins<TBL:Nombre>",
+		 "key <CLA:NOMBRE> of <TBL:NOMBRE> exits");
+    return -1;
+    }
+<CLAVE]
+
+[CLAVE UNICA>
+/*--------------------------------------------------------------------
+ | No debe existir otro elemento con igual clave unica: <CLA:NOMBRE>
+ +--------------------------------------------------------------------*/
+if (BuscaElemento(p<TBL:Nombre>, clv<CLA:Nombre><TBL:Nombre>,
+		  numElem, (PF_COMPAR)Cmp<CLA:Nombre><TBL:Nombre>) >= 0) {
+    ERR_Aplicacion(ERR_NO_FATAL, FUNC_BDT, "[+]_Ins<TBL:Nombre>",
+		   "key <CLA:NOMBRE> of <TBL:NOMBRE> exist");
+    return -1;
+    }
+
+<CLAVE]
+/*--------------------------------------------------------------------
+ | Si hay elementos libres, se toma para insercion el primero libre.
+ | Si se sobrepasa el limite de elementos max<TBL:dimMax> solo se
+ | acepta si se admite overflow. En ese caso se inserta sobre el ultimo
+ | elemento que es el elemento 0 y que tiene la clave menor.
+ +--------------------------------------------------------------------*/
+if (numElem < max<TBL:Nombre>) {
+    indClave = *num<TBL:Nombre>;
+    numElem++;
+    }
+else if (ovf<TBL:Nombre>)
+    indClave = 0;
+else {
+    ERR_Aplicacion(ERR_NO_FATAL, FUNC_BDT, "[+]_Ins<TBL:Nombre>",
+	      "overflow on <TBL:NOMBRE> (%d)", max<TBL:Nombre>);
+    return -1;
+    }
+
+/*--------------------------------------------------------------------
+ | Se calculan las posiciones para la actualizacion.
+ +--------------------------------------------------------------------*/
+[CLAVE PRINCIPAL>
+posicMem = clv<CLA:Nombre><TBL:Nombre>[indClave];
+indElem  = IND_<TBL:NOMBRE>(posicMem);
+posicFic = ELE_<TBL:NOMBRE>(indElem);
+<CLAVE]
+
+
+/*--------------------------------------------------------------------
+ | Codifica la struct Type<TBL:NOMBRE> sobre el elemento como OCUPADO
+ +--------------------------------------------------------------------*/
+Cod<TBL:Nombre>(elemCod, p<TBL:Nombre>);
+PONER_OCUPADO(elemCod);
+if (ActElemento(elemCod, LON_<TBL:NOMBRE>, posicFic,
+		p<TBL:Nombre>, TAM_<TBL:NOMBRE>, posicMem) == -1) {
+    return -1;
+    }
+
+*num<TBL:Nombre> = numElem;
+Ord<TBL:Nombre>();
+return 0;
+}
+
+/*========================= FUNCION PUBLICA =========================
+ * [+]_Del<TBL:Nombre>
+ *	Elimina un elemento <TBL:NOMBRE> ya existente, segun la
+ *	clave Principal.
+ *
+ *    Parametros:
+ *	p<TBL:Nombre>: punt. a la struct del elemento a eliminar.
+ *    Devuelve:
+ *	 0: si la eliminacion se realiza correctamente.
+ *	-1: si se produce un error.
+ *====================================================================*/
+int [+]_Del<TBL:Nombre>(Type<TBL:NOMBRE> *p<TBL:Nombre>)
+{
+	char elemCod[LON_<TBL:NOMBRE>];
+	int  posicMem;
+	int  posicFic;
+	int  indElem;
+
+[CLAVE PRINCIPAL>
+/*--------------------------------------------------------------------
+ | No debe existir otro elemento con igual valor en la clave principal
+ +--------------------------------------------------------------------*/
+indElem = BuscaElemento(p<TBL:Nombre>, clv<CLA:Nombre><TBL:Nombre>,
+		*num<TBL:Nombre>, (PF_COMPAR)Cmp<CLA:Nombre><TBL:Nombre>);
+if (indElem == -1) {
+    ERR_Aplicacion(ERR_NO_FATAL, FUNC_BDT, "[+]_Eli<TBL:Nombre>",
+		 "key <CLA:NOMBRE> of <TBL:NOMBRE> not exists");
+    return -1;
+    }
+
+/*--------------------------------------------------------------------
+ | Se calculan las posiciones para la actualizacion.
+ +--------------------------------------------------------------------*/
+posicMem = clv<CLA:Nombre><TBL:Nombre>[indElem];
+indElem  = IND_<TBL:NOMBRE>(posicMem);
+posicFic = ELE_<TBL:NOMBRE>(indElem);
+<CLAVE]
+
+/*--------------------------------------------------------------------
+ | Codifica la struct Type<TBL:NOMBRE> sobre el elemento como OCUPADO
+ +--------------------------------------------------------------------*/
+memset(elemCod, 0, LON_<TBL:NOMBRE>);
+PONER_LIBRE(elemCod);
+if (ActElemento(elemCod, LON_<TBL:NOMBRE>, posicFic,
+		p<TBL:Nombre>, TAM_<TBL:NOMBRE>, posicMem) == -1)
+    return -1;
+
+[CLAVE>
+PosicionLibre(posicMem, clv<CLA:Nombre><TBL:Nombre>, *num<TBL:Nombre>);
+<CLAVE]
+(*num<TBL:Nombre>)--;
+return 0;
+}
+
+/*========================= FUNCION PUBLICA =========================
+ * [+]_Mod<TBL:Nombre>
+ *	Modifica un elemento <TBL:NOMBRE> ya existente, segun la
+ *	clave principal, para lo cual la struct debe tener todos los
+ *	campos con los valores actualizados.
+ *
+ *    Parametros:
+ *	<TBL:nombre>: punt. a la struct del elemento a eliminar.
+ *    Devuelve:
+ *	 0: si la modificacion se realiza correctamente.
+ *	-1: si se produce un error.
+ *====================================================================*/
+int [+]_Mod<TBL:Nombre>(Type<TBL:NOMBRE> *p<TBL:Nombre>)
+{
+	char elemCod[LON_<TBL:NOMBRE>];
+	int  posicMem;
+	int  posicFic;
+	int  indElem;
+
+[CLAVE PRINCIPAL>
+/*--------------------------------------------------------------------
+ | No debe existir otro elemento con igual valor en la clave principal
+ +--------------------------------------------------------------------*/
+indElem = BuscaElemento(p<TBL:Nombre>, clv<CLA:Nombre><TBL:Nombre>,
+		*num<TBL:Nombre>, (PF_COMPAR)Cmp<CLA:Nombre><TBL:Nombre>);
+if (indElem == -1) {
+    ERR_Aplicacion(ERR_NO_FATAL, FUNC_BDT, "[+]_Mod<TBL:Nombre>",
+		   "key <CLA:NOMBRE> of <TBL:NOMBRE> not exists");
+    return -1;
+    }
+
+/*--------------------------------------------------------------------
+ | Se calculan las posiciones para la actualizacion.
+ +--------------------------------------------------------------------*/
+posicMem = clv<CLA:Nombre><TBL:Nombre>[indElem];
+indElem  = IND_<TBL:NOMBRE>(posicMem);
+posicFic = ELE_<TBL:NOMBRE>(indElem);
+<CLAVE]
+
+[CLAVE UNICA>
+/*--------------------------------------------------------------------
+ | Las clave unica <CLA:NOMBRE> debe coincidir con la actual.
+ +--------------------------------------------------------------------*/
+if (Cmp<CLA:Nombre><TBL:Nombre>(p<TBL:Nombre>,
+		(Type<TBL:NOMBRE> *) DIR_MEM(posicMem)) != 0) {
+    ERR_Aplicacion(ERR_NO_FATAL, FUNC_BDT, "[+]_Mod<TBL:Nombre>",
+		   "key <CLA:NOMBRE> of <TBL:NOMBRE> no found");
+    return -1;
+    }
+
+<CLAVE]
+
+/*--------------------------------------------------------------------
+ | Codifica la struct Type<TBL:NOMBRE> sobre el elemento como OCUPADO
+ +--------------------------------------------------------------------*/
+Cod<TBL:Nombre>(elemCod, p<TBL:Nombre>);
+PONER_OCUPADO(elemCod);
+if (ActElemento(elemCod, LON_<TBL:NOMBRE>, posicFic,
+		p<TBL:Nombre>, TAM_<TBL:NOMBRE>, posicMem) == -1)
+    return -1;
+
+[CLAVE NO UNICA>
+if (Cmp<CLA:Nombre><TBL:Nombre>(p<TBL:Nombre>,
+		(Type<TBL:NOMBRE> *) DIR_MEM(posicMem)) != 0)
+    qsort(clv<CLA:Nombre><TBL:Nombre>, *num<TBL:Nombre>,
+	  sizeof(int), (PF_COMPAR)CmpDes<CLA:Nombre><TBL:Nombre>);
+<CLAVE]
+return 0;
+}
+
+[CLAVE PRINCIPAL>
+/*========================= FUNCION PUBLICA =========================
+ * [+]_<TBL:Nombre>By<CLA:Nombre>
+ *	Busca un elemento <TBL:NOMBRE> , por la clave principal
+ *	para lo cual la struct debe tener todos los campos de la
+ *	clave con los valores actualizados.
+ *
+ *    Parametros:
+ *	<TBL:nombre>: punt. a la struct del elemento a buscar.
+ [CAMPO CLAVE> *	<CAM:nombre>: campo <CAM:NOMBRE> de busqueda.
+ <CAMPO CLAVE]
+ *    Devuelve:
+ *	 0: si la modificacion se realiza correctamente.
+ *	-1: si se produce un error.
+ *	Busca un elemento
+ *====================================================================*/
+int [+]_<TBL:Nombre>By<CLA:Nombre>(Type<TBL:NOMBRE> *p<TBL:Nombre>[CAMPO CLAVE>,
+				<CAM:tipoC><CAMPO CLAVE])
+{
+	int  indElem;
+
+/*--------------------------------------------------------------------
+ | Se codifican los campos de la clave principal sobre el elemento.
+ +--------------------------------------------------------------------*/
+[CAMPO CLAVE>
+<CAM:copEst>;
+<CAMPO CLAVE]
+
+/*--------------------------------------------------------------------
+ | Se busca el elemento accediendo por la clave principal y si no
+ | existe se devuelve -1.
+ +--------------------------------------------------------------------*/
+indElem = BuscaElemento(p<TBL:Nombre>, clv<CLA:Nombre><TBL:Nombre>,
+	      *num<TBL:Nombre>, (PF_COMPAR)Cmp<CLA:Nombre><TBL:Nombre>);
+if (indElem == -1)
+    return -1;
+
+/*--------------------------------------------------------------------
+ | Si existe, se decodifica el elemento completo sobre la struct.
+ +--------------------------------------------------------------------*/
+memcpy(p<TBL:Nombre>, DIR_MEM(clv<CLA:Nombre><TBL:Nombre>[indElem]), TAM_<TBL:NOMBRE>);
+return 0;
+}
+<CLAVE]
+
+/*========================= FUNCION PUBLICA =========================
+ * [+]_Vol<TBL:Nombre>
+ *	Realiza un volcado de la tabla <TBL:NOMBRE> ordenado por
+ *	la clave segun el parametro.
+ *    Parametros:
+ *	claveOrd: codigo de la clave para ordenar el volcado.
+ *	pLista: puntero para la lista del volcado.
+ *    Devuelve:
+ *	n: el numero de elementos seleccionados.
+ *	-1: si hay error en el acceso.
+ *====================================================================*/
+int [+]_Vol<TBL:Nombre>(int claveOrd, Type<TBL:NOMBRE> **pLista)
+{
+	int i;
+	Type<TBL:NOMBRE> *p<TBL:Nombre>;
+	int *claveAcceso;
+
+/*--------------------------------------------------------------------
+ | Se recoge el array de acceso por la clave definida por "claveOrd"
+ +--------------------------------------------------------------------*/
+claveAcceso = Clave<TBL:Nombre>(claveOrd);
+if (claveAcceso == NULL)
+    return -1;
+
+/*--------------------------------------------------------------------
+ | Si la tabla esta vacia no se hace nada mas y se devuelve 0.
+ +--------------------------------------------------------------------*/
+if (*num<TBL:Nombre> == 0)
+    return 0;
+
+/*--------------------------------------------------------------------
+ | Se pide memoria dinamica para almacenar los elementos del recorrido.
+ +--------------------------------------------------------------------*/
+p<TBL:Nombre> = (Type<TBL:NOMBRE> *) malloc(*num<TBL:Nombre> * TAM_<TBL:NOMBRE>);
+if (p<TBL:Nombre> == NULL) {
+    ERR_SistOper(ERR_NO_FATAL, FUNC_BDT, "[+]_Vol<TBL:Nombre>",
+	     "malloc", "(%d bytes) para volcado de <TBL:Nombre>", lonMemoria);
+    return -1;
+    }
+
+*pLista = p<TBL:Nombre>;
+
+/*--------------------------------------------------------------------
+ | Se copia la informacion de cada elemento de la lista segun la
+ | ordenacion de la clave.
+ +--------------------------------------------------------------------*/
+for (i = 0; i < *num<TBL:Nombre>; i++) {
+    memcpy(p<TBL:Nombre>, DIR_MEM(claveAcceso[i]), TAM_<TBL:NOMBRE>);
+    p<TBL:Nombre>++;
+    }
+
+return i;
+}
+
+[SELECCION>
+/*========================= FUNCION PUBLICA =========================
+ * [+]_Sel<TBL:Nombre>By<SEL:Nombre>
+ *	Realiza una seleccion de la tabla <TBL:NOMBRE> segun el
+ *	criterio <SEL:NOMBRE> y ordenado por una clave segun parametro.
+ *
+ *    Parametros:
+ *	claveOrd: codigo de la clave para ordenar el volcado.
+ *	pLista: puntero a la lista de la seleccion.
+[PARAMETRO SELECCION> *	<PRS:nombre>: valor para la seleccion.
+<PARAMETRO SELECCION]
+ *    Devuelve:
+ *	n: numero de elementos seleccionados (puede ser 0).
+ *	-1: si hay error en la seleccion.
+ *====================================================================*/
+int [+]_Sel<TBL:Nombre>By<SEL:Nombre>(int claveOrd,
+			Type<TBL:NOMBRE> **pLista[PARAMETRO SELECCION>,
+			<PRS:tipoC><PARAMETRO SELECCION])
+{
+	int   i;
+	int   totSelec;
+	Type<TBL:NOMBRE> *p<TBL:Nombre>;
+	Type<TBL:NOMBRE> lstSelec[MAX_<TBL:NOMBRE>];
+	int *claveAcceso;
+
+/*--------------------------------------------------------------------
+ | Se recoge el array de acceso por la clave definida por "claveOrd"
+ +--------------------------------------------------------------------*/
+claveAcceso = Clave<TBL:Nombre>(claveOrd);
+if (claveAcceso == NULL)
+    return -1;
+
+/*--------------------------------------------------------------------
+ | Si la tabla esta vacia no se hace nada mas y se devuelve 0.
+ +--------------------------------------------------------------------*/
+if (*num<TBL:Nombre> == 0)
+    return 0;
+
+/*--------------------------------------------------------------------
+ | Se recorre toda la tabla, decodificando cada elemento sobre el
+ | elemento siguiente de la lista. Si cumple la condicion de seleccion
+ | se avanza el puntero al siguiente elemento y se incrementa el numero
+ | de elementos seleccionados.
+ +--------------------------------------------------------------------*/
+totSelec = 0;
+for (i = 0; i < *num<TBL:Nombre>; i++) {
+    p<TBL:Nombre> = (Type<TBL:NOMBRE> *) DIR_MEM(claveAcceso[i]);
+    if (<SEL:expres>) {
+	memcpy(lstSelec + totSelec, p<TBL:Nombre>, TAM_<TBL:NOMBRE>);
+	totSelec++;
+	}
+    }
+
+/*--------------------------------------------------------------------
+ | Se pide memoria dinamica para almacenar los elementos de seleccion
+ | (solo si se ha seleccionado alguno y se copian sobre esta memoria.
+ +--------------------------------------------------------------------*/
+i = totSelec * TAM_<TBL:NOMBRE>;
+if (i > 0) {
+    *pLista = (Type<TBL:NOMBRE> *) malloc((size_t) i);
+    if (*pLista == NULL) {
+	ERR_SistOper(ERR_NO_FATAL, FUNC_BDT,
+		"[+]_Sel<TBL:Nombre>By<SEL:Nombre>", "malloc",
+		"(%d bytes) for search <SEL:Nombre> de <TBL:Nombre>", i);
+	return -1;
+	}
+    memcpy((void *) *pLista, (void *) lstSelec, i);
+    }
+return totSelec;
+}
+<SELECCION]
+<TABLA]
+
+/*####################################################################
+ *	 	FUNIONES LOCALES DEPENDIENTES DE LA BASE
+ *####################################################################*/
+
+/*========================= FUNCION PRIVADA =========================
+ * IniInformacion
+ *	Inicializa el acceso al fichero imagen de la base de datos y
+ *	se lee su contenido sobre la memoria dinamica.
+ *
+ *    Devuelve:
+ *	 0: si el acceso se realiza correctamente.
+ *	-1: si se produce un error.
+ *====================================================================*/
+static int IniInformacion()
+{
+	int   indOcu;
+	int   indLib;
+	int   indAct;
+	char *pElem;
+	int   i;  
+
+/*--------------------------------------------------------------------
+ | Se mira si el fichero imagen de la base de datos existe
+ +--------------------------------------------------------------------*/
+if (access(fichImagen, F_OK) == -1) {
+    ERR_Aplicacion(ERR_NO_FATAL, FUNC_BDT, "[+]: IniInformacion",
+		   "fichero \"%s\" no existente", fichImagen);
+    return -1;
+    }
+
+/*--------------------------------------------------------------------
+ | Se mira si el fichero imagen de Config. tiene permiso de lectura
+ +--------------------------------------------------------------------*/
+if (access(fichImagen, R_OK) == -1) {
+    ERR_Aplicacion(ERR_NO_FATAL, FUNC_BDT, "[+]: IniInformacion",
+		   "file \"%s\" can't read", fichImagen);
+    return -1;
+    }
+
+/*--------------------------------------------------------------------
+ | Se mira si el fichero imagen de Config. tiene permiso de escritura
+ +--------------------------------------------------------------------*/
+if (access(fichImagen, W_OK) == -1) {
+    ERR_Aplicacion(ERR_NO_FATAL, FUNC_BDT, "[+]: IniInformacion",
+		   "file \"%s\" can't write", fichImagen);
+    return -1;
+    }
+
+/*--------------------------------------------------------------------
+ | Se abre el fichero imagen de la base de datos
+ +--------------------------------------------------------------------*/
+fdFBD = open(fichImagen, O_RDWR | O_EXCL);
+if (fdFBD == -1) {
+    ERR_SistOper(ERR_NO_FATAL, FUNC_BDT, "[+]: IniInformacion", "open",
+		 "file \"%s\" (for read/write))", fichImagen);
+    return -1;
+    }
+ 
+[TABLA>
+{
+        char * bufElems;
+	Type<TBL:NOMBRE> *p<TBL:Nombre>;
+
+/*--------------------------------------------------------------------
+ | Se pide mem. dinamica para el leer el fichero imagen.
+ +--------------------------------------------------------------------*/
+bufElems = (char *) malloc( BUF_<TBL:NOMBRE> + 1);
+if (bufElems == NULL)
+    ERR_SistOper(ERR_FATAL, FUNC_BDT, "[+] IniInformacion", "malloc",
+		 "(%d bytes) path of base", BUF_<TBL:NOMBRE>);
+
+/*--------------------------------------------------------------------
+ | Se posiciona en la posicion  de la tabla <TBL:NOMBRE> en el fichero
+ +--------------------------------------------------------------------*/
+if (lseek(fdFBD, POS_<TBL:NOMBRE>, SEEK_SET) == -1) {
+    ERR_SistOper(ERR_NO_FATAL, FUNC_BDT, "[+]: IniInformacion", "lseek",
+		"file \"%s\" (position POS_<TBL:NOMBRE>)", fichImagen);
+    return -1;
+    }
+
+/*--------------------------------------------------------------------
+ | Se leen todos los elementos de la tabla desde el fichero.
+ +--------------------------------------------------------------------*/
+if (read(fdFBD, bufElems, BUF_<TBL:NOMBRE>) != BUF_<TBL:NOMBRE>) {
+    ERR_SistOper(ERR_NO_FATAL, FUNC_BDT, "[+]: IniInformacion", "read",
+		 "file \"%s\" (BUF_<TBL:NOMBRE> bytes)", fichImagen);
+    return -1;
+    }
+
+/*--------------------------------------------------------------------
+ | Se cuenta el numero de elementos que tiene el fichero y se comprueba
+ | que el dimensionado es suficiente.
+ +--------------------------------------------------------------------*/
+pElem = bufElems;
+*num<TBL:Nombre> = 0;
+for (i = 0; i < MAX_<TBL:NOMBRE>; i++, pElem += LON_<TBL:NOMBRE>)
+    if (ESTA_OCUPADO(pElem))
+	(*num<TBL:Nombre>)++;
+
+if (*num<TBL:Nombre> > max<TBL:Nombre>) {
+    ERR_Aplicacion(ERR_NO_FATAL, FUNC_BDT, "[+]: IniInformacion",
+    	"size  %d of <TBL:NOMBRE> great than max dimension %d",
+	*num<TBL:Nombre>, max<TBL:Nombre>);
+    return -1;
+    }
+
+/*--------------------------------------------------------------------
+ | Se extraen los registros ocupados y se inicializan las posiciones
+ | de cada clave.
+ +--------------------------------------------------------------------*/
+indOcu = 0;
+indLib = *num<TBL:Nombre>;
+pElem  = bufElems;
+p<TBL:Nombre> = (Type<TBL:NOMBRE> *) DIR_MEM(pos<TBL:Nombre>);
+for (i = 0; i < max<TBL:Nombre>; i++) {
+    if (ESTA_OCUPADO(pElem)) {
+	Dec<TBL:Nombre>(pElem, p<TBL:Nombre>);
+	indAct = indOcu;
+	indOcu++;
+	}
+    else {
+	indAct = indLib;
+	indLib++;
+	}
+[CLAVE>
+    clv<CLA:Nombre><TBL:Nombre>[indAct] = POS_MEM(p<TBL:Nombre>);
+<CLAVE]
+    pElem += LON_<TBL:NOMBRE>;
+    p<TBL:Nombre>++;
+    }
+    free(bufElems);
+}
+
+/*--------------------------------------------------------------------
+ | Se ordenan los array de posiciones de las claves de la tabla.
+ +--------------------------------------------------------------------*/
+Ord<TBL:Nombre>();
+
+<TABLA]
+
+/*--------------------------------------------------------------------
+ | Si no se deja abierto, se cierra el fichero imagen de la base.
+ +--------------------------------------------------------------------*/
+if (! fichAbierto)
+    if (close(fdFBD) == -1) {
+	ERR_SistOper(ERR_NO_FATAL, FUNC_BDT, "[+]: IniInformacion", "close",
+		     "file \"%s\"", fichImagen);
+	return -1;
+	}
+
+return 0;
+}
+
+/*====================== PROCEDIMIENTO PRIVADO ======================
+ * IniPunteros
+ *	Inicializa los punteros de acceso a cada una de las zonas de
+ *	la memoria:
+ *		- posicion correspondiente con el fichero imagen.
+ *		- arrays de acceso por clave.
+ *		- numero de elementos.
+ *		- informacion de la tablas.
+ *====================================================================*/
+static void IniPunteros()
+{
+	char *pActual;
+
+/*--------------------------------------------------------------------
+ | Se inicializa pActual al comienzo de la zona de memoria de la base
+ +--------------------------------------------------------------------*/
+pActual = pMemoria;
+
+[TABLA>
+/*--------------------------------------------------------------------
+ | Se inicializan los punteros de acceso a la tabla <TBL:NOMBRE>:
+ *	num<TBL:Nombre>: punt. al numero de elementos.
+[CLAVE>
+ *	clv<CLA:Nombre><TBL:Nombre>: array de acceso por la clave <CLA:Nombre>
+ *	pos<TBL:Nombre>: informacion de los elementos.
+<CLAVE]
+ +--------------------------------------------------------------------*/
+num<TBL:Nombre> = (int *) pActual;
+pActual += sizeof(int);
+[CLAVE>
+clv<CLA:Nombre><TBL:Nombre> = (int *) pActual;
+pActual += (max<TBL:Nombre> * sizeof(int *));
+<CLAVE]
+pos<TBL:Nombre> = POS_MEM(pActual);
+pActual += (max<TBL:Nombre> * TAM_<TBL:NOMBRE>);
+
+<TABLA]
+}
+
+
+[TABLA>
+/*====================== PROCEDIMIENTO PRIVADO ======================
+ * Cod<TBL:Nombre>
+ *	Codifica un Type<TBL:NOMBRE> sobre un elemento <TBL:Nombre>.
+ *    Parametros:
+ *      elem: buffer del elemento sobre el que codificar.
+ *	<TBL:nombre>: struct a realizar la codificacion.
+ *====================================================================*/
+static void Cod<TBL:Nombre>(char *elem, Type<TBL:NOMBRE> *p<TBL:Nombre>)
+{
+[CAMPO>
+<CAM:codEst>;
+<CAMPO]
+}
+
+/*====================== PROCEDIMIENTO PRIVADO ======================
+ * Dec<TBL:Nombre>
+ *	Decodifica un elemento <TBL:Nombre> sobre un Type<TBL:NOMBRE>
+ *    Parametros:
+ *      elem: buffer del elemento a decodificar.
+ *	<TBL:nombre>: struct sobre la que realizar la decodificacion.
+ *====================================================================*/
+static void Dec<TBL:Nombre>(char *elem, Type<TBL:NOMBRE> *p<TBL:Nombre>)
+{
+[CAMPO>
+<CAM:decEst>;
+<CAMPO]
+}
+
+/*========================= FUNCION PRIVADA =========================
+ * Ord<TBL:Nombre>
+ *	Ordena los punt. de acceso a la tabla <TBL:NOMBRE>, por:
+[CLAVE>
+ *		- <CLA:NOMBRE>
+<CLAVE]
+ *====================================================================*/
+static void Ord<TBL:Nombre>()
+{
+/*--------------------------------------------------------------------
+ | Ordena el array de acceso a la tabla <TBL:NOMBRE> por las claves:
+[CLAVE>
+ |	- <CLA:NOMBRE>
+<CLAVE]
+ +--------------------------------------------------------------------*/
+[CLAVE>
+qsort(clv<CLA:Nombre><TBL:Nombre>, *num<TBL:Nombre>,
+      sizeof(int), (PF_COMPAR)CmpDes<CLA:Nombre><TBL:Nombre>);
+<CLAVE]
+}
+
+/*========================= FUNCION PRIVADA =========================
+ * Clave<TBL:Nombre>
+ *	Devuelve el array de acceso correspondiente el codigo de
+ *	una determinada clave de la tabla <TBL:NOMBRE>.
+ *
+ *    Parametros:
+ *	codClave: codigo de la clave.
+ *    Devuelve:
+ *	el array de acceso de la clave: si el codigo es correcto.
+ *	NULL: si el codigo es erroneo.
+ *====================================================================*/
+static int *Clave<TBL:Nombre>(const int codClave)
+{
+switch(codClave) {
+[CLAVE>
+    case KEY_<CLA:NOMBRE>_<TBL:NOMBRE>:
+	return clv<CLA:Nombre><TBL:Nombre>;
+<CLAVE]
+    }
+ERR_Aplicacion(ERR_NO_FATAL, FUNC_BDT, "[+]: Key<TBL:Nombre>",
+	"key code (%d) on table <TBL:NOMBRE> wrong", codClave);
+return NULL;
+}
+
+[CLAVE>
+/*========================= FUNCION PRIVADA =========================
+ * CmpDes<CLA:Nombre><TBL:Nombre>
+ *	Compara la clave <CLA:NOMBRE> de dos elementos de la tabla
+ *	<TBL:NOMBRE> segun sus posiciones en la memoria.
+ *    Parametros:
+ *	pPosic1: punt. a la posicion del elemento 1 a comparar la clave.
+ *	pPosic2: punt. a la posicion del elemento 2 a comparar la clave.
+ *    Devuelve:
+ *      num > 0: si la clave del pPosic1 es mayor que el del pPosic2.
+ *      0:	 si la clave del pPosic1 es igual que el del pPosic2.
+ *      num < 0: si la clave del pPosic1 es menor que el del pPosic2.
+ *====================================================================*/
+static int CmpDes<CLA:Nombre><TBL:Nombre>(const int *pPosic1, const int *pPosic2)
+{
+return Cmp<CLA:Nombre><TBL:Nombre>((Type<TBL:NOMBRE> *) DIR_MEM(*pPosic1),
+			(Type<TBL:NOMBRE> *) DIR_MEM(*pPosic2));
+}
+
+/*========================= FUNCION PRIVADA =========================
+ * Cmp<CLA:Nombre><TBL:Nombre>
+ *	Compara la clave <CLA:NOMBRE> de dos elementos de la tabla
+ *	<TBL:NOMBRE>.
+ *    Parametros:
+ *	<TBL:nombre>:  punt. al elemento 1 a comparar la clave.
+ *	<TBL:nombre>2: punt. al elemento 2 a comparar la clave.
+ *    Devuelve:
+ *      num > 0: si la clave de <TBL:nombre> es mayor que <TBL:nombre>2.
+ *      0:       si la clave de <TBL:nombre> es igual que <TBL:nombre>2.
+ *      num < 0: si la clave de <TBL:nombre> es menor que <TBL:nombre>2.
+ *====================================================================*/
+static int Cmp<CLA:Nombre><TBL:Nombre>(const Type<TBL:NOMBRE> *p<TBL:Nombre>,
+				const Type<TBL:NOMBRE> *p<TBL:Nombre>2)
+{
+	int result;
+
+[CAMPO CLAVE>
+/*--------------------------------------------------------------------
+ | Si el campo <CAM:NOMBRE> del elemento 1 y 2 es distinto, se devuelve
+ | el resultado de la comparacion.
+ +--------------------------------------------------------------------*/
+if ((result = <CAM:cmpEst>) != 0) 
+    return result;
+
+<CAMPO CLAVE]
+return 0;
+}
+
+<CLAVE]
+<TABLA]
+
+/*========================= FUNCION PRIVADA =========================
+ * BuscaElemento
+ *	Busca un elemento por el algoritmo de busqueda binaria
+ *
+ *    Parametros:
+ *	elemBuscar: buffer del elemento a buscar.
+ *	accClave:   array de posiciones para acceso por clave.
+ *	numElem:    numero de elementos de la tabla.
+ *	FuncCompar: funcion de comparacion por la clave en cuestion.
+ *    Devuelve:
+ *	indice: indice (referido a puntClave) del elemento buscado.
+ *	-1: si el elemento no existe.
+ *====================================================================*/
+static int BuscaElemento(void *elemBuscar, int *accClave, int numElem,
+			 PF_COMPAR FuncCompar)
+{
+	int topeBajo;
+	int topeAlto;
+	int indice;
+	int result;
+
+/*--------------------------------------------------------------------
+ | Se inicializa la franja de busqueda a la totalidad de elementos.
+ +--------------------------------------------------------------------*/
+topeBajo = 0;
+topeAlto = numElem - 1;
+
+/*--------------------------------------------------------------------
+ | Se compara el elemento intermedio de la franja tal que si es:
+ |  - IGUAL: elemento encontrado.
+ |  - MAYOR: se toma la franja mitad superior (avanza topeBajo).
+ |  - MENOR: se toma la franja mitad inferior (retrocede topeAlto).
+ | Si se cruzan los indices, el elemento no existe.
+ +--------------------------------------------------------------------*/
+while (topeBajo <= topeAlto) {
+    indice = (topeBajo + topeAlto) / 2;
+    result = (*FuncCompar)(elemBuscar, DIR_MEM(accClave[indice]));
+    if (result == 0)
+	return indice;
+    if (result > 0)
+	topeBajo = indice + 1;
+    else
+	topeAlto = indice - 1;
+    }
+return -1;
+}
+
+/*========================= FUNCION PRIVADA =========================
+ * ActElemento
+ *	Actualiza el valor de un elemento de una tabla.
+ *
+ *    Parametros:
+ *	eleFic: elemento con el formato del fichero (codificado).
+ *	lonFic: longitud en bytes del elemento del fichero.
+ *	posFic: posicion en el fichero del elemento.
+ *	eleMem: elemento (struct).
+ *	lonMem: longitud en bytes del elemento.
+ *	posMem: posicion en la memoria.
+ *    Devuelve:
+ *	0: si la actualizacion es correcta.
+ *	-1: si error en la actualizacion.
+ *====================================================================*/
+static int ActElemento(char *eleFic, int lonFic, int posFic,
+		       void *eleMem, int lonMem, int posMem)
+{
+/*--------------------------------------------------------------------
+ | Se abre el fichero imagen de la base de datos si no esta abierto.
+ +--------------------------------------------------------------------*/
+if (! fichAbierto) {
+    fdFBD = open(fichImagen, O_RDWR | O_EXCL);
+    if (fdFBD == -1) {
+	ERR_SistOper(ERR_NO_FATAL, FUNC_BDT, "[+]: ActElemento", "open",
+		 "file \"%s\" (for read/write))", fichImagen);
+	return -1;
+	}
+    }
+ 
+/*--------------------------------------------------------------------
+ | Se prepara la escritura sobre la posicion del elemento.
+ +--------------------------------------------------------------------*/
+if (lseek(fdFBD, (off_t)posFic, SEEK_SET) == -1) {
+    ERR_SistOper(ERR_NO_FATAL, FUNC_BDT, "[+]: ActElemento", "lseek",
+    		 "file \"%s\" (position %ld)", fichImagen, posFic);
+    return -1;
+    }
+
+/*--------------------------------------------------------------------
+ | Se escribe el elemento sobre el fichero.
+ +--------------------------------------------------------------------*/
+if (write(fdFBD, (char *)eleFic, lonFic) != lonFic) {
+    ERR_SistOper(ERR_NO_FATAL, FUNC_BDT, "[+]: ActElemento", "write",
+    		 "file \"%s\" (%d bytes)", fichImagen, lonFic);
+    return -1;
+    }
+
+/*--------------------------------------------------------------------
+ | Si el fichero no se deja abierto, se cierra.
+ +--------------------------------------------------------------------*/
+if (! fichAbierto)
+    if (close(fdFBD) == -1) {
+	ERR_SistOper(ERR_NO_FATAL, FUNC_BDT, "[+]: ActElemento", "close",
+		     "file \"%s\"", fichImagen);
+	return -1;
+	}
+
+/*--------------------------------------------------------------------
+ | Se escribe el elemento sobre la memoria.
+ +--------------------------------------------------------------------*/
+memcpy(DIR_MEM(posMem), eleMem, (size_t)lonMem);
+
+return 0;
+}
+
+/*====================== PROCEDIMIENTO PRIVADO ======================
+ * PosicionLibre
+ *	Deja libre una posicion en un array de posiciones.
+ *
+ *    Parametros:
+ *	posicion: valor de la posicion a dejar libre.
+ *	array: array de posiciones a tratar.
+ *	numElem: numero de elementos del array de posiciones.
+ *====================================================================*/
+static void PosicionLibre(int posicion, int *array, int numElem)
+{
+	int i;
+
+/*--------------------------------------------------------------------
+ | Se busca la posicion en el array
+ +--------------------------------------------------------------------*/
+for (i = 0; i < numElem; i++)
+    if (array[i] == posicion)
+	break;
+
+/*--------------------------------------------------------------------
+ | Elimina la posicion moviendo el bloque de posiciones y la pone al
+ | final de dicho bloque.
+ +--------------------------------------------------------------------*/
+memmove(array + i, array + i + 1, (numElem - i - 1) * sizeof(int));
+array[numElem - 1] = posicion;
+}
