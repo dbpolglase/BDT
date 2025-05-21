@@ -1,0 +1,37 @@
+-----------------------------------------------------------
+--	    Almacen example6 			       ----
+-- Use BDTini  to populate the  BBDD   		       ----
+-----------------------------------------------------------
+Base		:	"Almacen example6 "
+Identifier	:	EXAM6
+Scope		:	local
+Table		:	TABLE1
+Dimension	:	100
+Fields		:	int  mykey
+			char caracter
+
+First Key: SEQUENCE = mykey
+Table		:	TABLE2
+Dimension	:	100
+Fields		:	int  mykey
+			char caracter
+			unsigned char ucaracter
+			short int corto
+			unsigned short int ucorto
+			int entero
+			unsigned int uentero
+			long lentero
+			unsigned long ulentero
+			float flotante
+			double doble
+			short int acortos[5]
+			unsigned short int aucortos[5]
+			int aenteros[5]
+			unsigned int auenteros[5]
+			long alenteros[5]
+			unsigned long aulenteros[5]
+			float aflotantes[5]
+			double adoble[5]
+			char achar[50]
+
+First Key: SEQUENCE = mykey

@@ -1,0 +1,30 @@
+-----------------------------------------------------------
+--	    Example3 					
+-- One base with several tables with a simple key a one field
+-- Use bdt_example3.h for the limits of the tables and fieds  
+-- for this BDTgen require -I                   
+-----------------------------------------------------------
+#include <bdt_example3.h>
+Base		:	"Simple example3"
+Identifier	:	EXAM3
+Scope		:	local
+Table		:	TABLE1
+Dimension	:	MAX_TABLE1
+Fields		:	int  mykey1
+			char text[MAX_TEXT]
+
+First Key: SEQUENCE = mykey1
+
+Table		:	TABLE2
+Dimension	:	MAX_TABLE2
+Fields		:	int  mykey2
+			char text[MAX_TEXT]
+
+First Key: SEQUENCE = mykey2
+
+Table		:	TABLE3
+Dimension	:	MAX_TABLE3
+Fields		:	int  mykey3
+			char text[MAX_TEXT]
+
+First Key: SEQUENCE = mykey3

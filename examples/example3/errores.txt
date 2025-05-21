@@ -1,0 +1,336 @@
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 13:46:30
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 13:46:32
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 13:46:35
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 13:46:37
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 13:46:40
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 13:46:42
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 13:46:45
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 13:46:47
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 13:46:51
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 13:46:55
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable2
+Fecha		14/05/2025 13:49:53
+key SEQUENCE of TABLE2 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable3
+Fecha		14/05/2025 13:52:22
+key SEQUENCE of TABLE3 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable2
+Fecha		14/05/2025 13:52:27
+key SEQUENCE of TABLE2 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable3
+Fecha		14/05/2025 13:52:31
+key SEQUENCE of TABLE3 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable2
+Fecha		14/05/2025 13:52:36
+key SEQUENCE of TABLE2 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable3
+Fecha		14/05/2025 13:52:41
+key SEQUENCE of TABLE3 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable2
+Fecha		14/05/2025 13:52:46
+key SEQUENCE of TABLE2 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable3
+Fecha		14/05/2025 13:52:52
+key SEQUENCE of TABLE3 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable2
+Fecha		14/05/2025 13:52:59
+key SEQUENCE of TABLE2 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable3
+Fecha		14/05/2025 13:53:05
+key SEQUENCE of TABLE3 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 14:03:37
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 14:03:37
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 14:03:37
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 14:03:37
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 14:03:37
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 14:03:37
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 14:03:37
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 14:03:37
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 14:03:37
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable1
+Fecha		14/05/2025 14:03:37
+key SEQUENCE of TABLE1 exits
+---------------------------------------
+Alarma de activacion
+---------------------------------------
+Aplicacion		**???**
+Proceso			**???**
+Bloque Funcional	Simple example3
+Fecha			14/05/2025 14:03:37
+10 errores en 0 segundos
+---------------------------------------
+Alarma de cese
+---------------------------------------
+Aplicacion		**???**
+Proceso			**???**
+Bloque Funcional	Simple example3
+Fecha			14/05/2025 14:04:47
+1 errores en 70 segundos
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable2
+Fecha		14/05/2025 14:04:47
+key SEQUENCE of TABLE2 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable3
+Fecha		14/05/2025 14:04:54
+key SEQUENCE of TABLE3 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable2
+Fecha		14/05/2025 14:04:54
+key SEQUENCE of TABLE2 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable3
+Fecha		14/05/2025 14:04:54
+key SEQUENCE of TABLE3 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable2
+Fecha		14/05/2025 14:04:54
+key SEQUENCE of TABLE2 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable3
+Fecha		14/05/2025 14:04:54
+key SEQUENCE of TABLE3 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable2
+Fecha		14/05/2025 14:04:54
+key SEQUENCE of TABLE2 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable3
+Fecha		14/05/2025 14:04:54
+key SEQUENCE of TABLE3 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable2
+Fecha		14/05/2025 14:04:54
+key SEQUENCE of TABLE2 exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM3_InsTable3
+Fecha		14/05/2025 14:04:54
+key SEQUENCE of TABLE3 exits

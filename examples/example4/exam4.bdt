@@ -1,0 +1,38 @@
+-----------------------------------------------------------
+--	    Example4 					
+-- One base with several tables with a simple key a one field
+-- Use bdt_example4.h for the limits of the tables and fieds  
+-- for this BDTgen require -I                   
+-----------------------------------------------------------
+#include <bdt_example4.h>
+Base		:	"Simple example3"
+Identifier	:	EXAM4
+Scope		:	local
+Table		:	TABLE1
+Dimension	:	MAX_TABLE1
+Fields		:	int  mykey1
+			char pair
+			char text[MAX_TEXT]
+
+First Key: SEQUENCE = mykey1
+Not Uniq  Key: PAIR = pair
+
+Table		:	TABLE2
+Dimension	:	MAX_TABLE2
+Fields		:	int  mykey2
+			int  keyTable1
+			char text[MAX_TEXT]
+
+First Key: SEQUENCE = mykey2
+Search: BUSQUEDA = (mykey2  >=  valueFrom) AND
+                (mykey2  <=  valueTo)
+
+Table		:	TABLE3
+Dimension	:	MAX_TABLE3
+Fields		:	int  mykey3
+			int  keyTable1
+			char isPair[MAX_TEXT]
+
+First Key: SEQUENCE = mykey3
+Search: BUSQUEDA = (mykey3  >=  valueFrom) AND
+		   (isPair HAS valueText)

@@ -1,0 +1,16 @@
+-----------------------------------------------------------
+--	    Example1 					---
+-- One base with a table with a simple key a one date   ---
+-- Use example1.h for the limits o the table and fieds  ---
+-- for this BDTgen require -I                           ---
+-----------------------------------------------------------
+#include <bdt_example1.h>
+Base		:	"Simple example"
+Identifier	:	EXAM1
+Scope		:	localMSB
+Table		:	TABLE
+Dimension	:	MAX_TABLE
+Fields		:	int  mykey
+			char text[MAX_TEXT]
+
+First Key: SEQUENCE = mykey

@@ -1,0 +1,33 @@
+-----------------------------------------------------------
+--	    Almacen example2 			       ----
+-- Insert of all type of fields   		       ----
+-----------------------------------------------------------
+#include <bdt_example2.h>
+
+Base		:	"Almacen example2 "
+Identifier	:	EXAM2
+Scope		:	local
+Table		:	TABLE
+Dimension	:	MAX_TABLE
+Fields		:	int  mykey
+			char caracter
+			unsigned char ucaracter
+			short int corto
+			unsigned short int ucorto
+			int entero
+			unsigned int uentero
+			long lentero
+			unsigned long ulentero
+			float flotante
+			double doble
+			short int acortos[5]
+			unsigned short int aucortos[5]
+			int aenteros[5]
+			unsigned int auenteros[5]
+			long alenteros[5]
+			unsigned long aulenteros[5]
+			float aflotantes[5]
+			double adoble[5]
+			char achar[50]
+
+First Key: SEQUENCE = mykey

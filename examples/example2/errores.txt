@@ -1,0 +1,573 @@
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: IniInformacion
+Fecha		29/04/2025 18:58:31
+fichero "EXAM2.ibd" no existente
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:31
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:31
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:31
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:31
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:31
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:31
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:31
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:31
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:31
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Alarma de activacion
+---------------------------------------
+Aplicacion		**???**
+Proceso			**???**
+Bloque Funcional	Almacen example2 
+Fecha			29/04/2025 18:58:31
+10 errores en 0 segundos
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: IniInformacion
+Fecha		29/04/2025 18:58:53
+fichero "EXAM2.ibd" no existente
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:53
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:53
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:53
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:53
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:53
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:53
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:53
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:53
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 18:58:53
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Alarma de activacion
+---------------------------------------
+Aplicacion		**???**
+Proceso			**???**
+Bloque Funcional	Almacen example2 
+Fecha			29/04/2025 18:58:53
+10 errores en 0 segundos
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: IniInformacion
+Fecha		29/04/2025 19:04:46
+fichero "EXAM2.ibd" no existente
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:46
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:46
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:46
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:46
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:46
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:46
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:46
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:46
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:46
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Alarma de activacion
+---------------------------------------
+Aplicacion		**???**
+Proceso			**???**
+Bloque Funcional	Almacen example2 
+Fecha			29/04/2025 19:04:46
+10 errores en 0 segundos
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: IniInformacion
+Fecha		29/04/2025 19:04:57
+fichero "EXAM2.ibd" no existente
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:57
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:57
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:57
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:57
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:57
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:57
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:57
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:57
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:04:57
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Alarma de activacion
+---------------------------------------
+Aplicacion		**???**
+Proceso			**???**
+Bloque Funcional	Almacen example2 
+Fecha			29/04/2025 19:04:57
+10 errores en 0 segundos
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: IniInformacion
+Fecha		29/04/2025 19:05:05
+fichero "EXAM2.ibd" no existente
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:05:05
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:05:05
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:05:05
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:05:05
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:05:05
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:05:05
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:05:05
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:05:05
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2: ActElemento
+Fecha		29/04/2025 19:05:05
+open: No such file or directory
+file "EXAM2.ibd" (for read/write))
+---------------------------------------
+Alarma de activacion
+---------------------------------------
+Aplicacion		**???**
+Proceso			**???**
+Bloque Funcional	Almacen example2 
+Fecha			29/04/2025 19:05:05
+10 errores en 0 segundos
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2_InsTable
+Fecha		29/04/2025 19:05:48
+key SEQUENCE of TABLE exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2_InsTable
+Fecha		29/04/2025 19:05:48
+key SEQUENCE of TABLE exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2_InsTable
+Fecha		29/04/2025 19:05:48
+key SEQUENCE of TABLE exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2_InsTable
+Fecha		29/04/2025 19:05:48
+key SEQUENCE of TABLE exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2_InsTable
+Fecha		29/04/2025 19:05:48
+key SEQUENCE of TABLE exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2_InsTable
+Fecha		29/04/2025 19:05:48
+key SEQUENCE of TABLE exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2_InsTable
+Fecha		29/04/2025 19:05:48
+key SEQUENCE of TABLE exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2_InsTable
+Fecha		29/04/2025 19:05:48
+key SEQUENCE of TABLE exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2_InsTable
+Fecha		29/04/2025 19:05:48
+key SEQUENCE of TABLE exits
+---------------------------------------
+Error no fatal
+---------------------------------------
+Aplicacion	**???**
+Proceso		**???**
+Funcion		EXAM2_InsTable
+Fecha		29/04/2025 19:05:48
+key SEQUENCE of TABLE exits
+---------------------------------------
+Alarma de activacion
+---------------------------------------
+Aplicacion		**???**
+Proceso			**???**
+Bloque Funcional	Almacen example2 
+Fecha			29/04/2025 19:05:48
+10 errores en 0 segundos
